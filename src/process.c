@@ -205,6 +205,24 @@ mrb_process_loginclass(mrb_state *mrb, mrb_value self)
   return mrb_login_class;
 }
 
+static mrb_value
+mrb_process_command(mrb_state *mrb, mrb_value self)
+{
+  struct kinfo_proc *proc;
+  mrb_value mrb_command;
+  char *command;
+
+  mrb_command = mrb_str_new_lit(mrb, "");
+  command = malloc(sizeof(char) * COMMLEN+1);
+  if (command == NULL)
+    mrb_sys_fail(mrb, "malloc");
+  proc = DATA_PTR(self);
+  memcpy(command, proc->ki_comm, COMMLEN+1);
+  mrb_str_cat_cstr(mrb, mrb_command, command);
+  free(command);
+  return mrb_command;
+}
+
 void
 mrb_mruby_kernel_process_gem_init(mrb_state *mrb)
 {
@@ -226,7 +244,7 @@ mrb_mruby_kernel_process_gem_init(mrb_state *mrb)
   mrb_define_method(mrb, cProcess, "svuid", mrb_process_svuid, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "login", mrb_process_login, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "login_class", mrb_process_loginclass, MRB_ARGS_NONE());
-
+  mrb_define_method(mrb, cProcess, "command", mrb_process_command, MRB_ARGS_NONE());
   MRB_SET_INSTANCE_TT(cProcess, MRB_TT_CDATA);
 }
 
