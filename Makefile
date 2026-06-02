@@ -22,7 +22,7 @@ TOOLCHAIN_STAMP = tmp/toolchain.$(BUILD).stamp
 all: toolchain test
 
 test: toolchain
-	ENV=TEST bin/mruby -r./spec/setup.rb spec/bsd_process_spec.rb
+	ENV=TEST bin/mruby -r./spec/setup.rb spec/process_spec.rb
 
 toolchain: $(TOOLCHAIN_STAMP)
 

@@ -17,6 +17,10 @@ describe "Kernel::Process" do
     it "returns the uid" do
       expect(subject.uid).must_equal Process.uid
     end
+
+    it "returns the command name" do
+      expect(subject.command).must_equal "mruby"
+    end
   end
 end
 
