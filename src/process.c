@@ -22,7 +22,7 @@ static void proc_free(mrb_state *mrb, void *ptr);
 static const
 mrb_data_type proc_type = { "Kernel::Process", proc_free };
 
-mrb_value
+static mrb_value
 mrb_process_find(mrb_state *mrb, mrb_value self)
 {
   mrb_int pid;
@@ -38,7 +38,7 @@ mrb_process_find(mrb_state *mrb, mrb_value self)
   );
 }
 
-mrb_value
+static mrb_value
 mrb_process_all(mrb_state *mrb, mrb_value self)
 {
   int count;
@@ -68,7 +68,7 @@ mrb_process_all(mrb_state *mrb, mrb_value self)
   return mrb_procs;
 }
 
-mrb_value
+static mrb_value
 mrb_process_pid(mrb_state *mrb, mrb_value self)
 {
   struct kinfo_proc *proc;
@@ -79,7 +79,7 @@ mrb_process_pid(mrb_state *mrb, mrb_value self)
   return mrb_fixnum_value((mrb_int)pid);
 }
 
-mrb_value
+static mrb_value
 mrb_process_ppid(mrb_state *mrb, mrb_value self)
 {
   struct kinfo_proc *proc;
@@ -90,7 +90,7 @@ mrb_process_ppid(mrb_state *mrb, mrb_value self)
   return mrb_fixnum_value((mrb_int)ppid);
 }
 
-mrb_value
+static mrb_value
 mrb_process_pgid(mrb_state *mrb, mrb_value self)
 {
   struct kinfo_proc *proc;
@@ -101,7 +101,7 @@ mrb_process_pgid(mrb_state *mrb, mrb_value self)
   return mrb_fixnum_value((mrb_int)pgid);
 }
 
-mrb_value
+static mrb_value
 mrb_process_sid(mrb_state *mrb, mrb_value self)
 {
   struct kinfo_proc *proc;
@@ -112,7 +112,7 @@ mrb_process_sid(mrb_state *mrb, mrb_value self)
   return mrb_fixnum_value((mrb_int)sid);
 }
 
-mrb_value
+static mrb_value
 mrb_process_tpgid(mrb_state *mrb, mrb_value self)
 {
   struct kinfo_proc *proc;
@@ -123,7 +123,7 @@ mrb_process_tpgid(mrb_state *mrb, mrb_value self)
   return mrb_fixnum_value((mrb_int)tpgid);
 }
 
-mrb_value
+static mrb_value
 mrb_process_uid(mrb_state *mrb, mrb_value self)
 {
   struct kinfo_proc *proc;
@@ -134,7 +134,7 @@ mrb_process_uid(mrb_state *mrb, mrb_value self)
   return mrb_fixnum_value((mrb_int)uid);
 }
 
-mrb_value
+static mrb_value
 mrb_process_ruid(mrb_state *mrb, mrb_value self)
 {
   struct kinfo_proc *proc;
@@ -145,7 +145,7 @@ mrb_process_ruid(mrb_state *mrb, mrb_value self)
   return mrb_fixnum_value((mrb_int)ruid);
 }
 
-mrb_value
+static mrb_value
 mrb_process_svuid(mrb_state *mrb, mrb_value self)
 {
   struct kinfo_proc *proc;
