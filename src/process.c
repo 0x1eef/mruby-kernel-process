@@ -7,6 +7,7 @@
 #include <mruby/data.h>
 #include <mruby/class.h>
 #include <mruby/array.h>
+#include <mruby/string.h>
 
 #include <sys/types.h>
 #include <sys/user.h>
@@ -168,6 +169,24 @@ mrb_process_svuid(mrb_state *mrb, mrb_value self)
   return mrb_fixnum_value((mrb_int)(svuid));
 }
 
+static mrb_value
+mrb_process_login(mrb_state *mrb, mrb_value self)
+{
+  struct kinfo_proc *proc;
+  mrb_value mrblogin;
+  char *login;
+
+  mrblogin = mrb_str_new_lit(mrb, "");
+  login = malloc(sizeof(char) * LOGNAMELEN+1);
+  if (login == NULL)
+    rb_sys_fail(mrb, "malloc");
+  proc = DATA_PTR(self);
+  memcpy(login, proc->ki_login, LOGNAMELEN+1);
+  mrb_str_cat_cstr(mrb, mrblogin, login);
+  free(login);
+  return mrblogin;
+}
+
 void
 mrb_mruby_kernel_process_gem_init(mrb_state *mrb)
 {
@@ -187,7 +206,7 @@ mrb_mruby_kernel_process_gem_init(mrb_state *mrb)
   mrb_define_method(mrb, cProcess, "uid", mrb_process_uid, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "ruid", mrb_process_ruid, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "svuid", mrb_process_svuid, MRB_ARGS_NONE());
-
+  mrb_define_method(mrb, cProcess, "login", mrb_process_login, MRB_ARGS_NONE());
   MRB_SET_INSTANCE_TT(cProcess, MRB_TT_CDATA);
 }
 
