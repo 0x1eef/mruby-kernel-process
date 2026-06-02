@@ -46,12 +46,18 @@ mrb_process_all(mrb_state *mrb, mrb_value self)
   for (int i = 0; i < count; i++) {
     struct kinfo_proc *proc;
     mrb_value mrb_proc;
-    proc = &procs[i];
+    proc = malloc(sizeof(*proc));
+    if (proc == NULL) {
+      free(procs);
+      mrb_sys_fail(mrb, "malloc");
+    }
+    memcpy(proc, &procs[i], sizeof(*proc));
     mrb_proc = mrb_obj_value(
       Data_Wrap_Struct(mrb, mrb_class_ptr(self), &proc_type, proc)
     );
     mrb_ary_push(mrb, mrb_procs, mrb_proc);
   }
+  free(procs);
   return mrb_procs;
 }
 
