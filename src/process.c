@@ -2,7 +2,12 @@
  * mruby-kernel-process — mruby bindings for BSD process APIs
  */
 
-#include "bsd_process.h"
+#include <mruby.h>
+#include <mruby/error.h>
+#include <mruby/data.h>
+#include <mruby/class.h>
+#include <mruby/array.h>
+
 #include <sys/types.h>
 #include <sys/user.h>
 #include <libutil.h>
@@ -10,6 +15,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+void mrb_mruby_kernel_process_gem_init(mrb_state *mrb);
+void mrb_mruby_kernel_process_gem_final(mrb_state *mrb);
 static void proc_free(mrb_state *mrb, void *ptr);
 
 static const
@@ -150,7 +157,7 @@ mrb_process_svuid(mrb_state *mrb, mrb_value self)
 }
 
 void
-mrb_mruby_bsd_process_gem_init(mrb_state *mrb)
+mrb_mruby_kernel_process_gem_init(mrb_state *mrb)
 {
   struct RClass *cProcess;
 
@@ -172,7 +179,7 @@ mrb_mruby_bsd_process_gem_init(mrb_state *mrb)
 }
 
 void
-mrb_mruby_bsd_process_gem_final(mrb_state *mrb)
+mrb_mruby_kernel_process_gem_final(mrb_state *mrb)
 {
   (void)mrb;
 }
