@@ -66,8 +66,8 @@ The `Kernel::Process.self` method returns an instance
 of `Kernel::Process` that represents the current process:
 
 ```ruby
-self = Process.self
-print "pid = ", self.pid, "\n"
+this = Process.self
+print "pid = ", this.pid, "\n"
 ```
 
 #### Kernel::Process.find
