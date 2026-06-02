@@ -60,6 +60,16 @@ end
 parents = Kernel::Process.map(&:ppid)
 ```
 
+#### Kernel::Process.self
+
+The `Kernel::Process.self` method returns an instance
+of `Kernel::Process` that represents the current process:
+
+```ruby
+self = Process.self
+print "pid = ", self.pid, "\n"
+```
+
 #### Kernel::Process.find
 
 The `Kernel::Process.find` method can find a process by ID, and returns an
@@ -67,7 +77,7 @@ instance of `Kernel::Process` or raises an error when a process by the given
 ID cannot be found:
 
 ```ruby
-process = Kernel::Process.find(Process.pid)
+process = Kernel::Process.find(12345)
 print "pid " , "\t", process.pid  , "\n"  # => process ID
 print "ppid ", "\t", process.ppid , "\n"  # => parent process ID
 print "uid " , "\t", process.uid  , "\n"  # => effective user id

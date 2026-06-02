@@ -14,6 +14,7 @@
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 void mrb_mruby_kernel_process_gem_init(mrb_state *mrb);
 void mrb_mruby_kernel_process_gem_final(mrb_state *mrb);
@@ -66,6 +67,17 @@ mrb_process_all(mrb_state *mrb, mrb_value self)
   }
   free(procs);
   return mrb_procs;
+}
+
+static mrb_value
+mrb_process_self(mrb_state *mrb, mrb_value self)
+{
+  pid_t pid;
+  mrb_value mrbpid;
+
+  pid = getpid();
+  mrbpid = mrb_fixnum_value((mrb_int)pid);
+  return mrb_funcall(mrb, self, "find", 1, mrbpid);
 }
 
 static mrb_value
@@ -165,6 +177,7 @@ mrb_mruby_kernel_process_gem_init(mrb_state *mrb)
 
   mrb_define_singleton_method(mrb, cProcess, "all", mrb_process_all, MRB_ARGS_NONE());
   mrb_define_singleton_method(mrb, cProcess, "find", mrb_process_find, MRB_ARGS_REQ(1));
+  mrb_define_singleton_method(mrb, cProcess, "self", mrb_process_self, MRB_ARGS_NONE());
 
   mrb_define_method(mrb, cProcess, "pid", mrb_process_pid, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "ppid", mrb_process_ppid, MRB_ARGS_NONE());
