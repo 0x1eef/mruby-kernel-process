@@ -223,6 +223,17 @@ mrb_process_command(mrb_state *mrb, mrb_value self)
   return mrb_command;
 }
 
+static mrb_value
+mrb_process_jid(mrb_state *mrb, mrb_value self)
+{
+  struct kinfo_proc *proc;
+  int jid;
+
+  proc = DATA_PTR(self);
+  jid = proc->ki_jid;
+  return mrb_fixnum_value((mrb_int) jid);
+}
+
 void
 mrb_mruby_kernel_process_gem_init(mrb_state *mrb)
 {
@@ -234,6 +245,7 @@ mrb_mruby_kernel_process_gem_init(mrb_state *mrb)
   mrb_define_singleton_method(mrb, cProcess, "find", mrb_process_find, MRB_ARGS_REQ(1));
   mrb_define_singleton_method(mrb, cProcess, "self", mrb_process_self, MRB_ARGS_NONE());
 
+  mrb_define_method(mrb, cProcess, "jid", mrb_process_jid, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "pid", mrb_process_pid, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "ppid", mrb_process_ppid, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "pgid", mrb_process_pgid, MRB_ARGS_NONE());

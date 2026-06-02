@@ -6,6 +6,10 @@ describe "Kernel::Process" do
       expect(subject.class).must_equal  Kernel::Process
     end
 
+    it "returns the jid" do
+      expect(subject.jid).must_equal 0
+    end
+
     it "returns the pid" do
       expect(subject.pid).must_equal Process.pid
     end
