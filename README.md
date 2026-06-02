@@ -22,27 +22,36 @@ information through FreeBSD's native
 specifically [kinfo_getproc(3)](https://man.freebsd.org/kinfo_getproc)
 and [kinfo_getallproc(3)](https://man.freebsd.org/kinfo_getallproc).
 
-Exposes fields such as pid, ppid, pgid, sid, tpgid, uid, ruid, and
-svuid.
 
 ## Quick start
 
-#### BSD::Process.all
+#### BSD::Process
 
-The `BSD::Process.all` method returns the processes visible to the
-current user:
+The BSD::Process singleton class is enumerable. It provides
+access to all processes that are visible to a user. We can
+use the `each` method to iterate over processes, we can use
+the `select` method to filter, and we can use the `map` method
+to trasform:
 
 ```ruby
-BSD::Process.all.each do |process|
-  print "pid=#{process.pid}", "ppid=#{process.ppid}",
-        "uid=#{process.uid}", "\n\n"
+##
+# Iterate all
+BSD::Process.each do |process|
+  print "pid=#{process.pid}",
+        "ppid=#{process.ppid}",
+        "uid=#{process.uid}",
+        "\n\n"
 end
-```
 
-Filtering is done on the Ruby side:
+##
+# Select root processes
+BSD::Process.select do |process|
+  process.uid == 0
+end
 
-```ruby
-root_procs = BSD::Process.all.select { |p| p.uid == 0 }
+##
+# Transform processes
+parents = BSD::Process.map(&:ppid)
 ```
 
 #### BSD::Process.find
