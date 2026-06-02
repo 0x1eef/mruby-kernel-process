@@ -32,6 +32,30 @@ mrb_process_find(mrb_state *mrb, mrb_value self)
 }
 
 mrb_value
+mrb_process_all(mrb_state *mrb, mrb_value self)
+{
+  int count;
+  mrb_value mrb_procs;
+  struct kinfo_proc *procs;
+
+  mrb_procs = mrb_ary_new(mrb);
+  procs = kinfo_getallproc(&count);
+  if (procs == NULL) {
+    mrb_sys_fail(mrb, "kinfo_getallproc");
+  }
+  for (int i = 0; i < count; i++) {
+    struct kinfo_proc *proc;
+    mrb_value mrb_proc;
+    proc = &procs[i];
+    mrb_proc = mrb_obj_value(
+      Data_Wrap_Struct(mrb, mrb_class_ptr(self), &proc_type, proc)
+    );
+    mrb_ary_push(mrb, mrb_procs, mrb_proc);
+  }
+  return mrb_procs;
+}
+
+mrb_value
 mrb_process_pid(mrb_state *mrb, mrb_value self)
 {
   struct kinfo_proc *proc;
@@ -127,7 +151,9 @@ mrb_mruby_bsd_process_gem_init(mrb_state *mrb)
   cBSD = mrb_define_module(mrb, "BSD");
   cProcess = mrb_define_class_under(mrb, cBSD, "Process", mrb->object_class);
 
+  mrb_define_singleton_method(mrb, cProcess, "all", mrb_process_all, MRB_ARGS_NONE());
   mrb_define_singleton_method(mrb, cProcess, "find", mrb_process_find, MRB_ARGS_REQ(1));
+  
   mrb_define_method(mrb, cProcess, "pid", mrb_process_pid, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "ppid", mrb_process_ppid, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "pgid", mrb_process_pgid, MRB_ARGS_NONE());

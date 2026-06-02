@@ -22,6 +22,18 @@ that information to the mruby runtime.
 
 ## Quick start
 
+#### BSD::Process.all
+
+The `BSD::Process.all` method returns all processes that a user
+can retrieve from the kernel. For the root user, it provides access
+to all running processes on the system:
+
+```ruby
+BSD::Process.all.each do |process|
+  print "pid=#{process.pid}", "ppid=#{process.ppid}", "uid=#{process.uid}", "\n\n"
+end
+```
+
 #### BSD::Process.find
 
 The `BSD::Process.find` method can find a process by ID, and returns an
