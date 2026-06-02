@@ -1,5 +1,5 @@
 /*
- * mruby-bsd-process — mruby bindings for BSD process APIs
+ * mruby-kernel-process — mruby bindings for BSD process APIs
  */
 
 #include "bsd_process.h"
@@ -13,7 +13,7 @@
 static void proc_free(mrb_state *mrb, void *ptr);
 
 static const
-mrb_data_type proc_type = { "BSD::Process", proc_free };
+mrb_data_type proc_type = { "Kernel::Process", proc_free };
 
 mrb_value
 mrb_process_find(mrb_state *mrb, mrb_value self)
@@ -152,14 +152,13 @@ mrb_process_svuid(mrb_state *mrb, mrb_value self)
 void
 mrb_mruby_bsd_process_gem_init(mrb_state *mrb)
 {
-  struct RClass *cBSD, *cProcess;
+  struct RClass *cProcess;
 
-  cBSD = mrb_define_module(mrb, "BSD");
-  cProcess = mrb_define_class_under(mrb, cBSD, "Process", mrb->object_class);
+  cProcess = mrb_define_class_under(mrb, mrb->kernel_module, "Process", mrb->object_class);
 
   mrb_define_singleton_method(mrb, cProcess, "all", mrb_process_all, MRB_ARGS_NONE());
   mrb_define_singleton_method(mrb, cProcess, "find", mrb_process_find, MRB_ARGS_REQ(1));
-  
+
   mrb_define_method(mrb, cProcess, "pid", mrb_process_pid, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "ppid", mrb_process_ppid, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "pgid", mrb_process_pgid, MRB_ARGS_NONE());

@@ -1,4 +1,4 @@
-MRuby::Gem::Specification.new('mruby-bsd-process') do |spec|
+MRuby::Gem::Specification.new('mruby-kernel-process') do |spec|
   spec.license = '0BSD'
   spec.author  = '0x1eef'
   spec.summary = 'mruby bindings for BSD process APIs'

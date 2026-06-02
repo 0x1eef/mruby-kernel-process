@@ -2,7 +2,7 @@ module BSD
   class Process
     extend Enumerable
     ##
-    # @return [Array<BSD::Process>]
+    # @return [Array<Kernel::Process>]
     def self.each(...)
       all.each(...)
     end
