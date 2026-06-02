@@ -17,11 +17,17 @@
 [mruby-kernel-process](https://github.com/0x1eef/mruby-kernel-process)
 provides an object-oriented interface around processes on FreeBSD
 systems. Unlike shelling out to ps(1), this library reads process
-information through FreeBSD's native
-[libutil(3)](https://man.freebsd.org/libutil) interfaces —
-specifically [kinfo_getproc(3)](https://man.freebsd.org/kinfo_getproc)
+information through FreeBSD's native libutil(3) interfaces &ndash;
+in particular [kinfo_getproc(3)](https://man.freebsd.org/kinfo_getproc)
 and [kinfo_getallproc(3)](https://man.freebsd.org/kinfo_getallproc).
 
+## Why "Kernel" ?
+
+The two functions that we use are implemented as easy-to-use wrappers
+around [sysctl(3)](https://man.freebsd.org/sysctl) &ndash; which is used
+to query kernel state, including information about active processes, hence
+the name "Kernel Process". It also avoids confusion and conflict with
+mruby-process.
 
 ## Quick start
 
