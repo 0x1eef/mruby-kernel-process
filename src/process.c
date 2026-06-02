@@ -179,12 +179,30 @@ mrb_process_login(mrb_state *mrb, mrb_value self)
   mrblogin = mrb_str_new_lit(mrb, "");
   login = malloc(sizeof(char) * LOGNAMELEN+1);
   if (login == NULL)
-    rb_sys_fail(mrb, "malloc");
+    mrb_sys_fail(mrb, "malloc");
   proc = DATA_PTR(self);
   memcpy(login, proc->ki_login, LOGNAMELEN+1);
   mrb_str_cat_cstr(mrb, mrblogin, login);
   free(login);
   return mrblogin;
+}
+
+static mrb_value
+mrb_process_loginclass(mrb_state *mrb, mrb_value self)
+{
+  struct kinfo_proc *proc;
+  mrb_value mrb_login_class;
+  char *login_class;
+
+  mrb_login_class = mrb_str_new_lit(mrb, "");
+  login_class = malloc(sizeof(char) * LOGINCLASSLEN+1);
+  if (login_class == NULL)
+    mrb_sys_fail(mrb, "malloc");
+  proc = DATA_PTR(self);
+  memcpy(login_class, proc->ki_loginclass, LOGINCLASSLEN+1);
+  mrb_str_cat_cstr(mrb, mrb_login_class, login_class);
+  free(login_class);
+  return mrb_login_class;
 }
 
 void
@@ -207,6 +225,8 @@ mrb_mruby_kernel_process_gem_init(mrb_state *mrb)
   mrb_define_method(mrb, cProcess, "ruid", mrb_process_ruid, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "svuid", mrb_process_svuid, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "login", mrb_process_login, MRB_ARGS_NONE());
+  mrb_define_method(mrb, cProcess, "login_class", mrb_process_loginclass, MRB_ARGS_NONE());
+
   MRB_SET_INSTANCE_TT(cProcess, MRB_TT_CDATA);
 }
 
