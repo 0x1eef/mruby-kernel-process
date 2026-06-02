@@ -1,4 +1,4 @@
-MRuby::Build.new("mruby-bsd-process") do |conf|
+MRuby::Build.new("mruby-kernel-process") do |conf|
   profile = ENV.fetch("BUILD", "test")
 
   conf.toolchain

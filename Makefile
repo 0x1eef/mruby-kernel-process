@@ -1,4 +1,4 @@
-# Makefile for mruby-bsd-process
+# Makefile for mruby-kernel-process
 #
 # Prerequisites:
 #   ../mruby    # mruby checkout (sibling directory)
@@ -10,7 +10,7 @@
 
 MRUBY_DIR    ?= ../mruby
 BUILD_CONFIG  = build.rb
-BUILD_NAME    = mruby-bsd-process
+BUILD_NAME    = mruby-kernel-process
 BUILD_DIR     = $(MRUBY_DIR)/build/$(BUILD_NAME)
 BUILD ?= test
 
