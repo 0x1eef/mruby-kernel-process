@@ -97,6 +97,28 @@ mrb_process_uid(mrb_state *mrb, mrb_value self)
   return mrb_fixnum_value((mrb_int)uid);
 }
 
+mrb_value
+mrb_process_ruid(mrb_state *mrb, mrb_value self)
+{
+  struct kinfo_proc *proc;
+  uid_t ruid;
+
+  proc = DATA_PTR(self);
+  ruid = proc->ki_ruid;
+  return mrb_fixnum_value((mrb_int)ruid);
+}
+
+mrb_value
+mrb_process_svuid(mrb_state *mrb, mrb_value self)
+{
+  struct kinfo_proc *proc;
+  uid_t svuid;
+
+  proc = DATA_PTR(self);
+  svuid = proc->ki_svuid;
+  return mrb_fixnum_value((mrb_int)(svuid));
+}
+
 void
 mrb_mruby_bsd_process_gem_init(mrb_state *mrb)
 {
@@ -112,6 +134,8 @@ mrb_mruby_bsd_process_gem_init(mrb_state *mrb)
   mrb_define_method(mrb, cProcess, "sid", mrb_process_sid, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "tpgid", mrb_process_tpgid, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "uid", mrb_process_uid, MRB_ARGS_NONE());
+  mrb_define_method(mrb, cProcess, "ruid", mrb_process_ruid, MRB_ARGS_NONE());
+  mrb_define_method(mrb, cProcess, "svuid", mrb_process_svuid, MRB_ARGS_NONE());
 
   MRB_SET_INSTANCE_TT(cProcess, MRB_TT_CDATA);
 }
