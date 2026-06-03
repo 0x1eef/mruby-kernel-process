@@ -25,6 +25,10 @@ describe "Kernel::Process" do
     it "returns the command name" do
       expect(subject.command).must_equal "mruby"
     end
+
+    it "returns the parent of self" do
+      expect(subject.parent.class).must_equal Kernel::Process
+    end
   end
 end
 
