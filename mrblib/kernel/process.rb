@@ -1,4 +1,4 @@
-module BSD
+module Kernel
   class Process
     extend Enumerable
     ##
