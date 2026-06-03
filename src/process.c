@@ -8,6 +8,7 @@
 #include <mruby/class.h>
 #include <mruby/array.h>
 #include <mruby/string.h>
+#include <mruby/variable.h>
 
 #include <sys/types.h>
 #include <sys/user.h>
@@ -234,6 +235,19 @@ mrb_process_jid(mrb_state *mrb, mrb_value self)
   return mrb_fixnum_value((mrb_int) jid);
 }
 
+static mrb_value
+mrb_process_start_time(mrb_state *mrb, mrb_value self)
+{
+  struct kinfo_proc *proc;
+  struct timeval start;
+  mrb_value cTime;
+
+  cTime = mrb_const_get(mrb, mrb_obj_value(mrb->object_class), mrb_intern_cstr(mrb, "Time"));
+  proc = DATA_PTR(self);
+  start = proc->ki_start;
+  return mrb_funcall(mrb, cTime, "at", 1, mrb_fixnum_value((mrb_int) start.tv_sec));
+}
+
 void
 mrb_mruby_kernel_process_gem_init(mrb_state *mrb)
 {
@@ -257,6 +271,8 @@ mrb_mruby_kernel_process_gem_init(mrb_state *mrb)
   mrb_define_method(mrb, cProcess, "login", mrb_process_login, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "login_class", mrb_process_loginclass, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "command", mrb_process_command, MRB_ARGS_NONE());
+  mrb_define_method(mrb, cProcess, "start_time", mrb_process_start_time, MRB_ARGS_NONE());
+
   MRB_SET_INSTANCE_TT(cProcess, MRB_TT_CDATA);
 }
 
