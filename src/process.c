@@ -248,6 +248,20 @@ mrb_process_start_time(mrb_state *mrb, mrb_value self)
   return mrb_funcall(mrb, cTime, "at", 1, mrb_fixnum_value((mrb_int) start.tv_sec));
 }
 
+static mrb_value
+mrb_process_runtime(mrb_state *mrb, mrb_value self)
+{
+  struct kinfo_proc *proc;
+  uintmax_t runtime;
+
+  proc = DATA_PTR(self);
+  runtime = proc->ki_runtime;
+  if (runtime >= MRB_INT_MAX) {
+    mrb_raise(mrb, E_RUNTIME_ERROR, "runtime exceeds MRB_INT_MAX");
+  }
+  return mrb_fixnum_value(runtime);
+}
+
 void
 mrb_mruby_kernel_process_gem_init(mrb_state *mrb)
 {
@@ -272,6 +286,7 @@ mrb_mruby_kernel_process_gem_init(mrb_state *mrb)
   mrb_define_method(mrb, cProcess, "login_class", mrb_process_loginclass, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "command", mrb_process_command, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "start_time", mrb_process_start_time, MRB_ARGS_NONE());
+  mrb_define_method(mrb, cProcess, "runtime", mrb_process_runtime, MRB_ARGS_NONE());
 
   MRB_SET_INSTANCE_TT(cProcess, MRB_TT_CDATA);
 }
