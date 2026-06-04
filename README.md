@@ -85,6 +85,21 @@ print "ruid ", "\t", process.ruid , "\n"  # => real user id
 print "svuid", "\t", process.svuid, "\n"  # => saved user id
 ```
 
+#### Kernel::Process#reload
+
+The `Kernel::Process` object represents a snapshot of a process
+in a moment of time. Certain values, such as the process runtime
+(`Kernel::Process#runtime`) are constantly changing but the process
+snapshot does not capture the new state unless you run
+`Kernel::Process#reload`:
+
+```ruby
+this = Kernel::Process.self
+print "runtime = ", this.runtime
+1.upto(100_000) { }
+print "runtime = ", this.reload.runtime
+```
+
 ## Build
 
 ```ruby

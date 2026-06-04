@@ -262,6 +262,21 @@ mrb_process_runtime(mrb_state *mrb, mrb_value self)
   return mrb_fixnum_value(runtime);
 }
 
+mrb_value static
+mrb_process_reload(mrb_state *mrb, mrb_value self)
+{
+  struct kinfo_proc *proc;
+  mrb_value mrb_pid;
+
+  mrb_pid = mrb_funcall(mrb, self, "pid", 0);
+  proc = kinfo_getproc((pid_t)mrb_fixnum(mrb_pid));
+  if (proc == NULL) {
+    mrb_sys_fail(mrb, "kinfo_getproc");
+  }
+  mrb_data_init(self, proc, &proc_type);
+  return self;
+}
+
 void
 mrb_mruby_kernel_process_gem_init(mrb_state *mrb)
 {
@@ -287,6 +302,7 @@ mrb_mruby_kernel_process_gem_init(mrb_state *mrb)
   mrb_define_method(mrb, cProcess, "command", mrb_process_command, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "start_time", mrb_process_start_time, MRB_ARGS_NONE());
   mrb_define_method(mrb, cProcess, "runtime", mrb_process_runtime, MRB_ARGS_NONE());
+  mrb_define_method(mrb, cProcess, "reload", mrb_process_reload, MRB_ARGS_NONE());
 
   MRB_SET_INSTANCE_TT(cProcess, MRB_TT_CDATA);
 }
