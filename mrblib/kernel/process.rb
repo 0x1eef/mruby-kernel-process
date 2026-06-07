@@ -19,5 +19,14 @@ module Kernel
     ##
     # Alias
     alias_method :starts_at, :start_time
+
+    ##
+    # @return [String]
+    def inspect
+      "#<Kernel::Process:0x#{object_id.to_s(16)} " \
+      "command=#{command} pid=#{pid} uid=#{uid}" \
+      ">"
+    end
+    alias_method :to_s, :inspect
   end
 end
