@@ -104,7 +104,8 @@ print "runtime = ", this.reload.runtime
 
 The `parent` method provides a `Kernel::Process` object that
 represents a parent process, and the method can be used to
-traverse all the way back to the root process (pid 1, `init`):
+traverse all the way back to the root process (pid 1, `init`),
+and even beyond that (pid 0, `kernel`):
 
 ```ruby
 this = Kernel::Process.self
@@ -112,6 +113,7 @@ until this.pid == 1
   this = this.parent
 end
 print "hello #{this.command}", "\n" # => hello init
+print "hello #{this.parent.command}", "\n" # => hello kernel
 ```
 
 ## ABI
