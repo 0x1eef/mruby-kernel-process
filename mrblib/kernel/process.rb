@@ -11,7 +11,7 @@ module Kernel
     # Returns the parent as a {Kernel::Process Kernel::Process} object.
     # @return [Kernel::Process, nil]
     def parent
-      Kernel::Process.find(ppid)
+      Kernel::Process.find_by(ppid)
     rescue Errno::ESRCH
       nil
     end

@@ -26,7 +26,7 @@ static const
 mrb_data_type proc_type = { "Kernel::Process", proc_free };
 
 static mrb_value
-mrb_process_find(mrb_state *mrb, mrb_value self)
+mrb_process_find_by(mrb_state *mrb, mrb_value self)
 {
   mrb_int pid;
   struct kinfo_proc *proc;
@@ -79,7 +79,7 @@ mrb_process_self(mrb_state *mrb, mrb_value self)
 
   pid = getpid();
   mrbpid = mrb_fixnum_value((mrb_int)pid);
-  return mrb_funcall(mrb, self, "find", 1, mrbpid);
+  return mrb_funcall(mrb, self, "find_by", 1, mrbpid);
 }
 
 static mrb_value
@@ -285,7 +285,7 @@ mrb_mruby_kernel_process_gem_init(mrb_state *mrb)
   cProcess = mrb_define_class_under(mrb, mrb->kernel_module, "Process", mrb->object_class);
 
   mrb_define_singleton_method(mrb, cProcess, "all", mrb_process_all, MRB_ARGS_NONE());
-  mrb_define_singleton_method(mrb, cProcess, "find", mrb_process_find, MRB_ARGS_REQ(1));
+  mrb_define_singleton_method(mrb, cProcess, "find_by", mrb_process_find_by, MRB_ARGS_REQ(1));
   mrb_define_singleton_method(mrb, cProcess, "self", mrb_process_self, MRB_ARGS_NONE());
 
   mrb_define_method(mrb, cProcess, "jid", mrb_process_jid, MRB_ARGS_NONE());

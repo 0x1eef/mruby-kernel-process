@@ -70,14 +70,14 @@ this = Process.self
 print "pid = ", this.pid, "\n"
 ```
 
-#### Kernel::Process.find
+#### Kernel::Process.find_by
 
-The `Kernel::Process.find` method can find a process by ID, and returns an
+The `Kernel::Process.find_by` method can find a process by ID, and returns an
 instance of `Kernel::Process` or raises an error when a process by the given
 ID cannot be found:
 
 ```ruby
-process = Kernel::Process.find(12345)
+process = Kernel::Process.find_by(12345)
 print "pid " , "\t", process.pid  , "\n"  # => process ID
 print "ppid ", "\t", process.ppid , "\n"  # => parent process ID
 print "uid " , "\t", process.uid  , "\n"  # => effective user id
