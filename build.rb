@@ -8,7 +8,7 @@ MRuby::Build.new("mruby-kernel-process") do |conf|
   case profile
   when "test", "developer"
     conf.enable_debug
-    ENV["BUILD"] = "TEST"
+    ENV["BUILD"] = "test"
   when "production"
     conf.cc.flags << "-DNDEBUG"
   else
